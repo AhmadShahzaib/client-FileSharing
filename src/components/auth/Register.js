@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../../config/api';
 import './Auth.css';
 
 const Register = ({ setIsAuthenticated }) => {
@@ -27,7 +28,7 @@ const Register = ({ setIsAuthenticated }) => {
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

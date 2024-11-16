@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { API_URL } from '../../config/api';
 import './Dashboard.css';
 
 const FileUpload = ({ onFileUpload }) => {
@@ -41,7 +42,7 @@ const FileUpload = ({ onFileUpload }) => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/files/upload', {
+      const response = await fetch(`${API_URL}/api/files/upload`, {
         method: 'POST',
         credentials: 'include',
         body: formData,

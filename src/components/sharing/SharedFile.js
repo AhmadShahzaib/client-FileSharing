@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { API_URL } from '../../config/api';
 import './SharedFile.css';
 
 const SharedFile = () => {
@@ -12,7 +13,7 @@ const SharedFile = () => {
     const fetchFile = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/files/shared/${fileId}`);
+        const response = await fetch(`${API_URL}/api/files/shared/${fileId}`);
         
         if (!response.ok) {
           throw new Error('File not found or access denied');
@@ -34,7 +35,7 @@ const SharedFile = () => {
   useEffect(() => {
     const recordView = async () => {
       try {
-        await fetch(`/api/files/${fileId}/view`, {
+        await fetch(`${API_URL}/api/files/${fileId}/view`, {
           method: 'POST'
         });
       } catch (error) {
@@ -46,6 +47,11 @@ const SharedFile = () => {
       recordView();
     }
   }, [file, fileId]);
+
+  const generateShareLink = (fileId) => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/share/${fileId}`;
+  };
 
   if (loading) {
     return (
@@ -101,7 +107,7 @@ const SharedFile = () => {
 
         <div className="download-section">
           <a
-            href={`/api/files/${fileId}/download`}
+            href={`${API_URL}/api/files/${fileId}/download`}
             download={file.name}
             className="download-button"
           >

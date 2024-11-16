@@ -1,5 +1,6 @@
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { useState } from 'react';
+import { API_URL } from '../../config/api';
 import './FileList.css';
 
 const FileList = ({ files, onFileSelect, onFileUpdate }) => {
@@ -8,7 +9,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
 
   const handleTagSubmit = async (fileId) => {
     try {
-      const response = await fetch(`/api/files/${fileId}/tags`, {
+      const response = await fetch(`${API_URL}/api/files/${fileId}/tags`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
   const handleDelete = async (fileId) => {
     if (window.confirm('Are you sure you want to delete this file?')) {
       try {
-        const response = await fetch(`/api/files/${fileId}`, {
+        const response = await fetch(`${API_URL}/api/files/${fileId}`, {
           method: 'DELETE',
           credentials: 'include'
         });
@@ -65,7 +66,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
           ref={provided.innerRef}
         >
           {files.map((file, index) => (
-            <Draggable key={file.id} draggableId={file.id} index={index}>
+            <Draggable key={file._id} draggableId={file._id} index={index}>
               {(provided) => (
                 <div
                   className="file-item"
@@ -89,7 +90,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
-                            handleTagSubmit(file.id);
+                            handleTagSubmit(file._id);
                           }}
                         >
                           <input
@@ -124,7 +125,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
                       className="share-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        copyShareLink(file.id);
+                        copyShareLink(file._id);
                       }}
                     >
                       Share
@@ -133,7 +134,7 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
                       className="delete-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(file.id);
+                        handleDelete(file._id);
                       }}
                     >
                       Delete

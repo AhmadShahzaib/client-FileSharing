@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../../config/api';
 import './Auth.css';
 
 const Login = ({ setIsAuthenticated }) => {
@@ -21,7 +22,7 @@ const Login = ({ setIsAuthenticated }) => {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

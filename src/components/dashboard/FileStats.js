@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { API_URL } from '../../config/api';
 import './FileList.css';
 
 const FileStats = ({ file, onUpdate }) => {
@@ -7,12 +8,12 @@ const FileStats = ({ file, onUpdate }) => {
 
   useEffect(() => {
     fetchStats();
-  }, [file.id]);
+  }, [file._id]);
 
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/files/${file.id}/stats`, {
+      const response = await fetch(`${API_URL}/api/files/${file._id}/stats`, {
         credentials: 'include'
       });
       const data = await response.json();

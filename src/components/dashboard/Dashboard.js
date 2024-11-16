@@ -4,6 +4,7 @@ import FileUpload from './FileUpload';
 import FileList from './FileList';
 import FileStats from './FileStats';
 import './Dashboard.css';
+import { API_URL } from '../../config/api';
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
@@ -15,7 +16,7 @@ const Dashboard = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch('/api/files', {
+      const response = await fetch(`${API_URL}/api/files`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -37,14 +38,14 @@ const Dashboard = () => {
     setFiles(items);
 
     try {
-      await fetch('/api/files/reorder', {
+      await fetch(`${API_URL}/api/files/reorder`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify({
-          fileId: reorderedItem.id,
+          fileId: reorderedItem._id,
           newPosition: result.destination.index
         })
       });
@@ -60,7 +61,7 @@ const Dashboard = () => {
         <button 
           className="logout-button"
           onClick={async () => {
-            await fetch('/api/auth/logout', {
+            await fetch(`${API_URL}/api/auth/logout`, {
               method: 'POST',
               credentials: 'include'
             });
