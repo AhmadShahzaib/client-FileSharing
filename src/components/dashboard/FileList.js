@@ -2,6 +2,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { useState } from 'react';
 import { API_URL } from '../../config/api';
 import './FileList.css';
+import { toast } from 'react-toastify';
 
 const FileList = ({ files, onFileSelect, onFileUpdate }) => {
   const [editingTags, setEditingTags] = useState(null);
@@ -51,10 +52,26 @@ const FileList = ({ files, onFileSelect, onFileUpdate }) => {
     return `${baseUrl}/share/${fileId}`;
   };
 
-  const copyShareLink = (fileId) => {
+  const copyShareLink = async (fileId) => {
     const link = generateShareLink(fileId);
-    navigator.clipboard.writeText(link);
-    // You could add a toast notification here
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+      const textarea = document.createElement('textarea');
+      textarea.value = link;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        toast.success('Link copied to clipboard!');
+      } catch (err) {
+        console.error('Fallback copy failed:', err);
+        toast.error('Failed to copy link. Please copy manually: ' + link);
+      }
+      document.body.removeChild(textarea);
+    }
   };
 
   return (
